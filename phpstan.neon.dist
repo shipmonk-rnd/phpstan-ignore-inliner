@@ -1,0 +1,31 @@
+includes:
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+
+parameters:
+    level: 8
+    paths:
+        - bin/inline-phpstan-ignores
+        - src
+        - tests
+    excludePaths:
+        analyseAndScan:
+            - tests/data/*
+    tmpDir: cache/phpstan/
+    checkMissingCallableSignature: true
+    checkUninitializedProperties: true
+    checkBenevolentUnionTypes: true
+    checkImplicitMixed: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    reportAnyTypeWideningInVarTag: true
+    exceptions:
+        check:
+            missingCheckedExceptionInThrows: true
+            tooWideThrowType: true
+        implicitThrows: false
+        uncheckedExceptionClasses:
+            - LogicException
+
+    ignoreErrors:
+        - # allow uncatched exceptions in tests
+            identifier: missingType.checkedException
+            path: tests/*
