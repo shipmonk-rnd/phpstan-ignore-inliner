@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+namespace ShipMonk\PHPStan\Errors;
+
+use JsonException;
+
+$autoloadFiles = [
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+];
+
+foreach ($autoloadFiles as $autoloadFile) {
+    if (file_exists($autoloadFile)) {
+        require_once $autoloadFile;
+        break;
+    }
+}
+
+$usage = "\n\nUsage:\n$ vendor/bin/phpstan --error-format=json | vendor/bin/inline-phpstan-ignores\n";
+
+try {
+    $io = new Io();
+    $input = $io->readInput();
+    $errorsData = json_decode($input, associative: true, flags: JSON_THROW_ON_ERROR);
+    $errors = $errorsData['files'] ?? throw new FailureException('No \'files\' key found on input JSON.');
+
+    $inliner = new InlineIgnoreInliner($io);
+    $inliner->inlineErrors($errors);
+
+    $errorsCount = count($errors);
+    echo "Done, $errorsCount errors processed.\n";
+
+} catch (JsonException | FailureException $e) {
+    echo $e->getMessage() . $usage;
+}

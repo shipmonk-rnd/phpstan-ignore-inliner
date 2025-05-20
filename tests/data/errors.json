@@ -1,0 +1,26 @@
+{
+    "totals": {
+        "errors": 0,
+        "file_errors": 2
+    },
+    "files": {
+        "tests/data/test.php": {
+            "errors": 2,
+            "messages": [
+                {
+                    "message": "Method Dummy::test() has parameter $b with no type specified.",
+                    "line": 6,
+                    "ignorable": true,
+                    "identifier": "missingType.parameter"
+                },
+                {
+                    "message": "Method Dummy::test() with return type void returns null but should not return anything.",
+                    "line": 8,
+                    "ignorable": true,
+                    "identifier": "return.void"
+                }
+            ]
+        }
+    },
+    "errors": []
+}
