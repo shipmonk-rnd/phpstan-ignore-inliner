@@ -1,5 +1,5 @@
 {
-    "name": "shipmonk/phpstan-ignore-inline",
+    "name": "shipmonk/phpstan-ignore-inliner",
     "description": "Inline your PHPStan error ignores into the source files via @phpstan-ignore comments.",
     "license": [
         "MIT"
