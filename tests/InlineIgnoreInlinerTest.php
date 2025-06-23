@@ -2,22 +2,31 @@
 
 namespace ShipMonk\PHPStan\Errors;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use function file;
 use function file_get_contents;
 use function file_put_contents;
 use function json_decode;
+use function str_replace;
 use function sys_get_temp_dir;
 use function uniqid;
 
 class InlineIgnoreInlinerTest extends TestCase
 {
 
-    public function testInlineErrors(): void
+    #[DataProvider('lineEndingProvider')]
+    public function testInlineErrors(string $lineEnding): void
     {
         $tmpFilePath = sys_get_temp_dir() . '/' . uniqid('ignore', true) . '.php';
-        $testedFileContents = file_get_contents(__DIR__ . '/data/test.php');
-        self::assertNotFalse($testedFileContents);
-        self::assertNotFalse(file_put_contents($tmpFilePath, $testedFileContents));
+        $tmpExpectedPath = sys_get_temp_dir() . '/' . uniqid('ignore-expected', true) . '.php';
+
+        // Create test files with specified line endings
+        $testContent = $this->getTestFileContent('test.php', $lineEnding);
+        $expectedContent = $this->getTestFileContent('test.fixed.php', $lineEnding);
+
+        self::assertNotFalse(file_put_contents($tmpFilePath, $testContent));
+        self::assertNotFalse(file_put_contents($tmpExpectedPath, $expectedContent));
 
         $ioMock = $this->createMock(Io::class);
         $ioMock->expects(self::exactly(2))
@@ -27,8 +36,8 @@ class InlineIgnoreInlinerTest extends TestCase
             });
         $ioMock->expects(self::exactly(2))
             ->method('readFile')
-            ->willReturnCallback(static function (string $filePath) use ($tmpFilePath): string|false {
-                return file_get_contents($tmpFilePath);
+            ->willReturnCallback(static function (string $filePath) use ($tmpFilePath): array|false {
+                return file($tmpFilePath);
             });
 
         $testJson = file_get_contents(__DIR__ . '/data/errors.json');
@@ -37,7 +46,26 @@ class InlineIgnoreInlinerTest extends TestCase
         $inliner = new InlineIgnoreInliner($ioMock);
         $inliner->inlineErrors($testData);
 
-        self::assertFileEquals(__DIR__ . '/data/test.fixed.php', $tmpFilePath);
+        self::assertFileEquals($tmpExpectedPath, $tmpFilePath);
+    }
+
+    private function getTestFileContent(string $filename, string $lineEnding): string
+    {
+        $content = file_get_contents(__DIR__ . '/data/' . $filename);
+        self::assertNotFalse($content);
+
+        return str_replace("\n", $lineEnding, $content);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function lineEndingProvider(): array
+    {
+        return [
+            'Unix line endings' => ["\n"],
+            'Windows line endings' => ["\r\n"],
+        ];
     }
 
 }
