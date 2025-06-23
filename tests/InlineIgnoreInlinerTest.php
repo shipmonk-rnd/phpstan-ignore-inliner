@@ -21,7 +21,6 @@ class InlineIgnoreInlinerTest extends TestCase
         $tmpFilePath = sys_get_temp_dir() . '/' . uniqid('ignore', true) . '.php';
         $tmpExpectedPath = sys_get_temp_dir() . '/' . uniqid('ignore-expected', true) . '.php';
 
-        // Create test files with specified line endings
         $testContent = $this->getTestFileContent('test.php', $lineEnding);
         $expectedContent = $this->getTestFileContent('test.fixed.php', $lineEnding);
 
