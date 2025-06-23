@@ -4,7 +4,10 @@ namespace ShipMonk\PHPStan\Errors;
 
 use function explode;
 use function implode;
+use function rtrim;
 use function str_contains;
+use function strlen;
+use function substr;
 
 final class InlineIgnoreInliner
 {
@@ -33,17 +36,17 @@ final class InlineIgnoreInliner
 
                 [$trueFilePath] = explode(' (in context of class', $filePath, 2); // solve trait "filepath" in format "src/App/MyTrait.php (in context of class App\Clazz)"
 
-                $fileContent = $this->io->readFile($trueFilePath);
-                $lines = explode("\n", $fileContent);
+                $lines = $this->io->readFile($trueFilePath);
 
-                $lineContent = $lines[$line - 1];
+                $lineContent = rtrim($lines[$line - 1]);
+                $lineEnding = substr($lines[$line - 1], strlen($lineContent));
 
                 $append = str_contains($lineContent, '// @phpstan-ignore ')
                     ? ', ' . $identifier
                     : ' // @phpstan-ignore ' . $identifier;
 
-                $lines[$line - 1] .= $append;
-                $this->io->writeFile($trueFilePath, implode("\n", $lines));
+                $lines[$line - 1] = $lineContent . $append . $lineEnding;
+                $this->io->writeFile($trueFilePath, implode('', $lines));
             }
         }
     }

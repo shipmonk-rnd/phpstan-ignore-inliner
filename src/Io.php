@@ -2,7 +2,7 @@
 
 namespace ShipMonk\PHPStan\Errors;
 
-use function file_get_contents;
+use function file;
 use function file_put_contents;
 use function stream_get_contents;
 use const STDIN;
@@ -29,17 +29,18 @@ class Io
     }
 
     /**
+     * @return list<string>
      * @throws FailureException
      */
-    public function readFile(string $filePath): string
+    public function readFile(string $filePath): array
     {
-        $contents = file_get_contents($filePath);
+        $lines = file($filePath);
 
-        if ($contents === false) {
+        if ($lines === false) {
             throw new FailureException('Could not read file ' . $filePath);
         }
 
-        return $contents;
+        return $lines;
     }
 
     /**
