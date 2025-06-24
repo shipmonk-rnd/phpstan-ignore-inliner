@@ -12,8 +12,11 @@ use function substr;
 final class InlineIgnoreInliner
 {
 
-    public function __construct(private Io $io)
+    private Io $io;
+
+    public function __construct(Io $io)
     {
+        $this->io = $io;
     }
 
     /**
