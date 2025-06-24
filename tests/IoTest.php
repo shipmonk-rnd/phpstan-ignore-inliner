@@ -2,7 +2,6 @@
 
 namespace ShipMonk\PHPStan\Errors;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use function fclose;
 use function fwrite;
@@ -17,9 +16,10 @@ class IoTest extends TestCase
 
     /**
      * @param list<string> $args
+     *
+     * @dataProvider optionsProvider
      */
-    #[DataProvider('optionsProvider')]
-    public function testValidCliOptions(
+    public function testCliOptions(
         int $exitCode,
         string $input,
         array $args,
