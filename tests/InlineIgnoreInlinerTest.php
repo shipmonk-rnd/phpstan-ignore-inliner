@@ -19,7 +19,7 @@ class InlineIgnoreInlinerTest extends TestCase
      */
     public function testInlineErrors(
         string $lineEnding,
-        ?string $comment,
+        ?string $comment
     ): void
     {
         $tmpFilePath = sys_get_temp_dir() . '/' . uniqid('ignore', true) . '.php';
