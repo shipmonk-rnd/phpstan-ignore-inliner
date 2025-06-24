@@ -21,7 +21,8 @@ final class InlineIgnoreInliner
      * @throws FailureException
      */
     public function inlineErrors(
-        array $errors
+        array $errors,
+        ?string $comment
     ): void
     {
         foreach ($errors as $filePath => $fileErrors) {
@@ -40,10 +41,13 @@ final class InlineIgnoreInliner
 
                 $lineContent = rtrim($lines[$line - 1]);
                 $lineEnding = substr($lines[$line - 1], strlen($lineContent));
+                $resolvedComment = $comment === null
+                    ? ''
+                    : " ($comment)";
 
                 $append = str_contains($lineContent, '// @phpstan-ignore ')
-                    ? ', ' . $identifier
-                    : ' // @phpstan-ignore ' . $identifier;
+                    ? ', ' . $identifier . $resolvedComment
+                    : ' // @phpstan-ignore ' . $identifier . $resolvedComment;
 
                 $lines[$line - 1] = $lineContent . $append . $lineEnding;
                 $this->io->writeFile($trueFilePath, implode('', $lines));

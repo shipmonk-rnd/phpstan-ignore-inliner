@@ -41,6 +41,9 @@ composer require --dev shipmonk/phpstan-ignore-inliner
 vendor/bin/phpstan --error-format=json | vendor/bin/inline-phpstan-ignores
 ```
 
+## Cli options
+- `--comment`: Adds a comment to all inlined ignores, resulting in `// @phpstan-ignore empty.notAllowed (the comment)`
+
 ## Contributing
 - Check your code by `composer check`
 - Autofix coding-style by `composer fix:cs`
