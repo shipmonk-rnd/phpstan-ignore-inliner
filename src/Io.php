@@ -9,8 +9,8 @@ use function getopt;
 use function in_array;
 use function is_array;
 use function is_string;
-use function str_starts_with;
 use function stream_get_contents;
+use function strpos;
 use const STDIN;
 
 class Io
@@ -24,7 +24,7 @@ class Io
     public function readCliComment(array $argv): ?string
     {
         foreach (array_slice($argv, 1) as $arg) {
-            if (str_starts_with($arg, '--') && !str_starts_with($arg, '--comment')) {
+            if (strpos($arg, '--') === 0 && strpos($arg, '--comment') !== 0) {
                 throw new FailureException('Unexpected option: ' . $arg);
             }
         }

@@ -27,8 +27,8 @@ class IoTest extends TestCase
     ): void
     {
         $result = $this->runCliCommand($args, $input);
-        self::assertSame($exitCode, $result['exitCode']);
         self::assertStringContainsString($expectedOutput, $result['stdout']);
+        self::assertSame($exitCode, $result['exitCode']);
     }
 
     /**
