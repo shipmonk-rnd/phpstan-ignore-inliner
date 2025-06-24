@@ -19,7 +19,12 @@ class IoTest extends TestCase
      * @param list<string> $args
      */
     #[DataProvider('optionsProvider')]
-    public function testValidCliOptions(int $exitCode, string $input, array $args, string $expectedOutput): void
+    public function testValidCliOptions(
+        int $exitCode,
+        string $input,
+        array $args,
+        string $expectedOutput,
+    ): void
     {
         $result = $this->runCliCommand($args, $input);
         self::assertSame($exitCode, $result['exitCode']);
@@ -51,7 +56,10 @@ class IoTest extends TestCase
      * @param list<string> $args
      * @return array{exitCode: int, stdout: string, stderr: string}
      */
-    private function runCliCommand(array $args, string $input): array
+    private function runCliCommand(
+        array $args,
+        string $input,
+    ): array
     {
         $binaryPath = __DIR__ . '/../bin/inline-phpstan-ignores';
         $command = ['php', $binaryPath, ...$args];

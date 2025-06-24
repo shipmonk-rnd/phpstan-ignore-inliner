@@ -16,7 +16,10 @@ class InlineIgnoreInlinerTest extends TestCase
 {
 
     #[DataProvider('lineEndingProvider')]
-    public function testInlineErrors(string $lineEnding, ?string $comment): void
+    public function testInlineErrors(
+        string $lineEnding,
+        ?string $comment,
+    ): void
     {
         $tmpFilePath = sys_get_temp_dir() . '/' . uniqid('ignore', true) . '.php';
         $tmpExpectedPath = sys_get_temp_dir() . '/' . uniqid('ignore-expected', true) . '.php';
@@ -52,7 +55,10 @@ class InlineIgnoreInlinerTest extends TestCase
         self::assertFileEquals($tmpExpectedPath, $tmpFilePath);
     }
 
-    private function getTestFileContent(string $filename, string $lineEnding): string
+    private function getTestFileContent(
+        string $filename,
+        string $lineEnding,
+    ): string
     {
         $content = file_get_contents(__DIR__ . '/data/' . $filename);
         self::assertNotFalse($content);

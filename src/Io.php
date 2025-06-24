@@ -18,6 +18,7 @@ class Io
 
     /**
      * @param array<string> $argv
+     *
      * @throws FailureException
      */
     public function readCliComment(array $argv): ?string
@@ -66,6 +67,7 @@ class Io
 
     /**
      * @return list<string>
+     *
      * @throws FailureException
      */
     public function readFile(string $filePath): array
@@ -82,7 +84,10 @@ class Io
     /**
      * @throws FailureException
      */
-    public function writeFile(string $filePath, string $contents): void
+    public function writeFile(
+        string $filePath,
+        string $contents,
+    ): void
     {
         if (file_put_contents($filePath, $contents) === false) {
             throw new FailureException('Could not write file ' . $filePath);
