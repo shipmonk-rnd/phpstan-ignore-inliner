@@ -5,8 +5,8 @@ namespace ShipMonk\PHPStan\Errors;
 use function explode;
 use function implode;
 use function rtrim;
-use function str_contains;
 use function strlen;
+use function strpos;
 use function substr;
 
 final class InlineIgnoreInliner
@@ -49,7 +49,7 @@ final class InlineIgnoreInliner
                     ? ''
                     : " ($comment)";
 
-                $append = str_contains($lineContent, '// @phpstan-ignore ')
+                $append = strpos($lineContent, '// @phpstan-ignore ') !== false
                     ? ', ' . $identifier . $resolvedComment
                     : ' // @phpstan-ignore ' . $identifier . $resolvedComment;
 
