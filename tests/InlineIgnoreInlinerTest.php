@@ -16,13 +16,17 @@ class InlineIgnoreInlinerTest extends TestCase
 {
 
     #[DataProvider('lineEndingProvider')]
-    public function testInlineErrors(string $lineEnding): void
+    public function testInlineErrors(string $lineEnding, ?string $comment): void
     {
         $tmpFilePath = sys_get_temp_dir() . '/' . uniqid('ignore', true) . '.php';
         $tmpExpectedPath = sys_get_temp_dir() . '/' . uniqid('ignore-expected', true) . '.php';
 
+        $expectedFileName = $comment !== null
+            ? 'test.fixed.comment.php'
+            : 'test.fixed.php';
+
         $testContent = $this->getTestFileContent('test.php', $lineEnding);
-        $expectedContent = $this->getTestFileContent('test.fixed.php', $lineEnding);
+        $expectedContent = $this->getTestFileContent($expectedFileName, $lineEnding);
 
         self::assertNotFalse(file_put_contents($tmpFilePath, $testContent));
         self::assertNotFalse(file_put_contents($tmpExpectedPath, $expectedContent));
@@ -43,7 +47,7 @@ class InlineIgnoreInlinerTest extends TestCase
         $testData = json_decode($testJson, associative: true)['files']; // @phpstan-ignore argument.type
 
         $inliner = new InlineIgnoreInliner($ioMock);
-        $inliner->inlineErrors($testData);
+        $inliner->inlineErrors($testData, $comment);
 
         self::assertFileEquals($tmpExpectedPath, $tmpFilePath);
     }
@@ -57,13 +61,15 @@ class InlineIgnoreInlinerTest extends TestCase
     }
 
     /**
-     * @return array<string, array{string}>
+     * @return array<string, array{string, ?string}>
      */
     public static function lineEndingProvider(): array
     {
         return [
-            'Unix line endings' => ["\n"],
-            'Windows line endings' => ["\r\n"],
+            'Unix line endings' => ["\n", null],
+            'Unix line endings + comment' => ["\n", 'some comment'],
+            'Windows line endings' => ["\r\n", null],
+            'Windows line endings + comment' => ["\r\n", 'some comment'],
         ];
     }
 
