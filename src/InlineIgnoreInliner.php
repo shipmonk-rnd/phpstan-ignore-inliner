@@ -5,15 +5,18 @@ namespace ShipMonk\PHPStan\Errors;
 use function explode;
 use function implode;
 use function rtrim;
-use function str_contains;
 use function strlen;
+use function strpos;
 use function substr;
 
 final class InlineIgnoreInliner
 {
 
-    public function __construct(private Io $io)
+    private Io $io;
+
+    public function __construct(Io $io)
     {
+        $this->io = $io;
     }
 
     /**
@@ -23,7 +26,7 @@ final class InlineIgnoreInliner
      */
     public function inlineErrors(
         array $errors,
-        ?string $comment,
+        ?string $comment
     ): void
     {
         foreach ($errors as $filePath => $fileErrors) {
@@ -46,7 +49,7 @@ final class InlineIgnoreInliner
                     ? ''
                     : " ($comment)";
 
-                $append = str_contains($lineContent, '// @phpstan-ignore ')
+                $append = strpos($lineContent, '// @phpstan-ignore ') !== false
                     ? ', ' . $identifier . $resolvedComment
                     : ' // @phpstan-ignore ' . $identifier . $resolvedComment;
 

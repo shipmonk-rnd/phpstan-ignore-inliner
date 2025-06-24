@@ -12,7 +12,9 @@
     <exclude-pattern>tests/data/*</exclude-pattern>
 
     <config name="installed_paths" value="vendor/slevomat/coding-standard,vendor/shipmonk/coding-standard"/>
-    <config name="php_version" value="80100"/>
+    <config name="php_version" value="70400"/>
 
-    <rule ref="ShipMonkCodingStandard"/>
+    <rule ref="ShipMonkCodingStandard">
+        <exclude name="SlevomatCodingStandard.Commenting.ForbiddenAnnotations.AnnotationForbidden"/><!-- It removes @dataProvider, but PHPUnit 9 does not yet have #[DataProvider] -->
+    </rule>
 </ruleset>
