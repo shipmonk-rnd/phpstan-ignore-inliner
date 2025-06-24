@@ -5,11 +5,11 @@ parameters:
     level: 8
     paths:
         - bin/inline-phpstan-ignores
-        - src
-        - tests
+        - src/
+        - tests/
     excludePaths:
         analyseAndScan:
-            - tests/data/*
+            - tests/data/
     tmpDir: cache/phpstan/
     checkMissingCallableSignature: true
     checkUninitializedProperties: true
@@ -26,6 +26,6 @@ parameters:
             - LogicException
 
     ignoreErrors:
-        - # allow uncatched exceptions in tests
+        - # Allow uncaught exceptions in tests
             identifier: missingType.checkedException
-            path: tests/*
+            path: tests/
