@@ -43,12 +43,14 @@ class InlineIgnoreInlinerTest extends TestCase
             });
         $ioMock->expects(self::exactly(2))
             ->method('readFile')
-            ->willReturnCallback(static function (string $filePath) use ($tmpFilePath): array|false {
-                return file($tmpFilePath);
+            ->willReturnCallback(static function (string $filePath) use ($tmpFilePath): array {
+                $lines = file($tmpFilePath);
+                self::assertIsArray($lines);
+                return $lines;
             });
 
         $testJson = file_get_contents(__DIR__ . '/data/errors.json');
-        $testData = json_decode($testJson, associative: true)['files']; // @phpstan-ignore argument.type
+        $testData = json_decode($testJson, true)['files']; // @phpstan-ignore argument.type
 
         $inliner = new InlineIgnoreInliner($ioMock);
         $inliner->inlineErrors($testData, $comment);
@@ -58,7 +60,7 @@ class InlineIgnoreInlinerTest extends TestCase
 
     private function getTestFileContent(
         string $filename,
-        string $lineEnding,
+        string $lineEnding
     ): string
     {
         $content = file_get_contents(__DIR__ . '/data/' . $filename);

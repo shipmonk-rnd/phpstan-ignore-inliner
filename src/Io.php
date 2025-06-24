@@ -86,7 +86,7 @@ class Io
      */
     public function writeFile(
         string $filePath,
-        string $contents,
+        string $contents
     ): void
     {
         if (file_put_contents($filePath, $contents) === false) {

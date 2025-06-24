@@ -26,7 +26,7 @@ final class InlineIgnoreInliner
      */
     public function inlineErrors(
         array $errors,
-        ?string $comment,
+        ?string $comment
     ): void
     {
         foreach ($errors as $filePath => $fileErrors) {

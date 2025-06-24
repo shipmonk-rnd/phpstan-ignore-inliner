@@ -23,7 +23,7 @@ class IoTest extends TestCase
         int $exitCode,
         string $input,
         array $args,
-        string $expectedOutput,
+        string $expectedOutput
     ): void
     {
         $result = $this->runCliCommand($args, $input);
@@ -58,7 +58,7 @@ class IoTest extends TestCase
      */
     private function runCliCommand(
         array $args,
-        string $input,
+        string $input
     ): array
     {
         $binaryPath = __DIR__ . '/../bin/inline-phpstan-ignores';
