@@ -19,6 +19,10 @@ foreach ($autoloadFiles as $autoloadFile) {
 
 $usage = "\n\nUsage:\n$ vendor/bin/phpstan --error-format=json | vendor/bin/inline-phpstan-ignores\n";
 
+if (!isset($argv)) {
+    throw new \LogicException('$argv is not available');
+}
+
 try {
     $io = new Io();
     $input = $io->readInput();

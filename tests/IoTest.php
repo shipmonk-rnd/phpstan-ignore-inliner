@@ -5,7 +5,6 @@ namespace ShipMonk\PHPStan\Errors;
 use PHPUnit\Framework\TestCase;
 use function fclose;
 use function fwrite;
-use function is_array;
 use function is_resource;
 use function proc_close;
 use function proc_open;
@@ -78,7 +77,7 @@ class IoTest extends TestCase
             self::fail('Failed to start process');
         }
 
-        if (!is_array($pipes) || !isset($pipes[0], $pipes[1], $pipes[2])) {
+        if (!isset($pipes[0], $pipes[1], $pipes[2])) {
             self::fail('Failed to create pipes');
         }
 

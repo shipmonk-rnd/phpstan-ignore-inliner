@@ -43,7 +43,7 @@ class InlineIgnoreInlinerTest extends TestCase
             });
         $ioMock->expects(self::exactly(2))
             ->method('readFile')
-            ->willReturnCallback(static function (string $filePath) use ($tmpFilePath): array {
+            ->willReturnCallback(static function () use ($tmpFilePath): array {
                 $lines = file($tmpFilePath);
                 self::assertIsArray($lines);
                 return $lines;
