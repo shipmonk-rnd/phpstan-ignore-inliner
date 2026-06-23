@@ -2,6 +2,7 @@
 
 namespace ShipMonk\PHPStan\Errors;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use function file;
 use function file_get_contents;
@@ -14,12 +15,10 @@ use function uniqid;
 class InlineIgnoreInlinerTest extends TestCase
 {
 
-    /**
-     * @dataProvider lineEndingProvider
-     */
+    #[DataProvider('lineEndingProvider')]
     public function testInlineErrors(
         string $lineEnding,
-        ?string $comment
+        ?string $comment,
     ): void
     {
         $tmpFilePath = sys_get_temp_dir() . '/' . uniqid('ignore', true) . '.php';
@@ -60,7 +59,7 @@ class InlineIgnoreInlinerTest extends TestCase
 
     private function getTestFileContent(
         string $filename,
-        string $lineEnding
+        string $lineEnding,
     ): string
     {
         $content = file_get_contents(__DIR__ . '/data/' . $filename);

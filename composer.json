@@ -13,7 +13,7 @@
         "error identifier"
     ],
     "require": {
-        "php": "^7.4 || ^8.0"
+        "php": "^8.1"
     },
     "require-dev": {
         "editorconfig-checker/editorconfig-checker": "^10.7.0",
@@ -22,8 +22,9 @@
         "phpstan/phpstan": "^2.1.17",
         "phpstan/phpstan-phpunit": "^2.0.6",
         "phpstan/phpstan-strict-rules": "^2.0.4",
-        "phpunit/phpunit": "^9.6.23",
-        "shipmonk/coding-standard": "^0.1.3",
+        "phpunit/phpunit": "^10.5.62 || ^11.5.50",
+        "shipmonk/coding-standard": "^0.2.0",
+        "shipmonk/composer-dependency-analyser": "^1.8.4",
         "shipmonk/phpstan-rules": "^4.1.2",
         "slevomat/coding-standard": "^8.18.0"
     },
@@ -54,13 +55,15 @@
             "@check:ec",
             "@check:cs",
             "@check:types",
-            "@check:tests"
+            "@check:tests",
+            "@check:dependencies"
         ],
         "check:composer": [
             "composer normalize --dry-run --no-check-lock --no-update-lock",
             "composer validate --strict"
         ],
         "check:cs": "phpcs",
+        "check:dependencies": "composer-dependency-analyser",
         "check:ec": "ec src tests",
         "check:tests": "phpunit tests",
         "check:types": "phpstan analyse -vv --ansi",
