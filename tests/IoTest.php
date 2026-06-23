@@ -2,6 +2,7 @@
 
 namespace ShipMonk\PHPStan\Errors;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use function fclose;
 use function fwrite;
@@ -15,14 +16,13 @@ class IoTest extends TestCase
 
     /**
      * @param list<string> $args
-     *
-     * @dataProvider optionsProvider
      */
+    #[DataProvider('optionsProvider')]
     public function testCliOptions(
         int $exitCode,
         string $input,
         array $args,
-        string $expectedOutput
+        string $expectedOutput,
     ): void
     {
         $result = $this->runCliCommand($args, $input);
@@ -57,7 +57,7 @@ class IoTest extends TestCase
      */
     private function runCliCommand(
         array $args,
-        string $input
+        string $input,
     ): array
     {
         $binaryPath = __DIR__ . '/../bin/inline-phpstan-ignores';
