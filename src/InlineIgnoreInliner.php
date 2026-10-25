@@ -20,7 +20,7 @@ final class InlineIgnoreInliner
     }
 
     /**
-     * @param array<string, array{messages: array<array{line: ?int, identifier: ?string, ignorable: ?bool}>}> $errors
+     * @param array<string, array{messages: array<array{line?: ?int, identifier?: ?string, ignorable?: ?bool}>}> $errors
      *
      * @throws FailureException
      */
